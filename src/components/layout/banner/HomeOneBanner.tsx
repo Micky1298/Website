@@ -19,9 +19,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 const HomeOneBanner = () => {
   const [videoActive, setVideoActive] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const lottieRef = useRef<any>(null);
 
   useEffect(() => {
+    setIsMounted(true);
+
     if (typeof window !== "undefined") {
       const device_width = window.innerWidth;
 
@@ -108,7 +111,7 @@ const HomeOneBanner = () => {
             overflow: "hidden",
           }}
         >
-          {typeof window !== "undefined" && (
+          {isMounted && (
             <Lottie
               lottieRef={lottieRef}
               animationData={Hero1}
