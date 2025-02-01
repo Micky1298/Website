@@ -5,13 +5,15 @@ import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import Lottie from "lottie-react";
+import dynamic from "next/dynamic";
 
 import star from "public/images/star.png";
 import Hero1 from "../../../../public/Hero.json";
 import letstalkfinal from "/public/images/letstalkfinal.svg";
 import YoutubeEmbed from "@/components/youtube/YoutubeEmbed";
 import styles from "@/HomeOneBanner.module.scss";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -106,13 +108,15 @@ const HomeOneBanner = () => {
             overflow: "hidden",
           }}
         >
-          <Lottie
-            lottieRef={lottieRef}
-            animationData={Hero1}
-            loop={true}
-            autoplay={true}
-            style={{ width: "100%", height: "100%" }}
-          />
+          {typeof window !== "undefined" && (
+            <Lottie
+              lottieRef={lottieRef}
+              animationData={Hero1}
+              loop={true}
+              autoplay={true}
+              style={{ width: "100%", height: "100%" }}
+            />
+          )}
         </div>
         <Image src={star || "/placeholder.svg"} alt="Image" className="star" />
         <div className="banner-left-text banner-social-text d-none d-md-flex">
