@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import Lottie from "lottie-react";
 
 import star from "public/images/star.png";
 import Hero1 from "../../../../public/Hero.json";
@@ -14,23 +15,10 @@ import styles from "@/HomeOneBanner.module.scss";
 
 const HomeOneBanner = () => {
   const [videoActive, setVideoActive] = useState(false);
-  const lottieContainer = useRef(null);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    let lottieAnimation: any;
-
-    const initializeLottie = async () => {
-      const lottie = (await import("lottie-web")).default;
-      if (lottieContainer.current) {
-        lottieAnimation = lottie.loadAnimation({
-          container: lottieContainer.current,
-          renderer: "svg",
-          loop: true,
-          autoplay: true,
-          animationData: Hero1,
-        });
-      }
-    };
+    setIsClient(true);
 
     if (typeof window !== "undefined") {
       gsap.registerPlugin(ScrollTrigger);
@@ -59,15 +47,7 @@ const HomeOneBanner = () => {
           duration: 2,
         });
       }
-
-      initializeLottie();
     }
-
-    return () => {
-      if (lottieAnimation) {
-        lottieAnimation.destroy();
-      }
-    };
   }, []);
 
   return (
@@ -115,20 +95,23 @@ const HomeOneBanner = () => {
             </div>
           </div>
         </div>
-        <div
-          className="banner-one-thumb d-none d-sm-block g-ban-one"
-          style={{
-            position: "absolute",
-            right: "0",
-            top: "65%",
-            transform: "translateY(-50%)",
-            width: "40%",
-            height: "auto",
-            maxHeight: "80vh",
-            overflow: "hidden",
-          }}
-          ref={lottieContainer}
-        ></div>
+        {isClient && (
+          <div
+            className="banner-one-thumb d-none d-sm-block g-ban-one"
+            style={{
+              position: "absolute",
+              right: "0",
+              top: "65%",
+              transform: "translateY(-50%)",
+              width: "40%",
+              height: "auto",
+              maxHeight: "80vh",
+              overflow: "hidden",
+            }}
+          >
+            <Lottie animationData={Hero1} loop={true} />
+          </div>
+        )}
         <Image src={star || "/placeholder.svg"} alt="Image" className="star" />
         <div className="banner-left-text banner-social-text d-none d-md-flex">
           <Link href="mailto:info@reap.com">mail : info@reap.com</Link>

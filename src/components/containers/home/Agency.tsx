@@ -1,34 +1,21 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import dynamic from "next/dynamic";
-import thumbone from "public/images/agency/thumb-one.png";
+import Lottie from "lottie-react";
+
 import star from "public/images/star.png";
 import dotlarge from "public/images/agency/dot-large.png";
 import Aboutus from "../../../../public/Aboutus.json";
 
 const Agency = () => {
-  const lottieContainer = useRef(null);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    let lottieAnimation: any;
-
-    const initializeLottie = async () => {
-      const lottie = (await import("lottie-web")).default;
-      if (lottieContainer.current) {
-        lottieAnimation = lottie.loadAnimation({
-          container: lottieContainer.current,
-          renderer: "svg",
-          loop: true,
-          autoplay: true,
-          animationData: Aboutus,
-        });
-      }
-    };
+    setIsClient(true);
 
     if (typeof window !== "undefined") {
       gsap.registerPlugin(ScrollTrigger);
@@ -93,15 +80,7 @@ const Agency = () => {
           );
         }
       });
-
-      initializeLottie();
     }
-
-    return () => {
-      if (lottieAnimation) {
-        lottieAnimation.destroy();
-      }
-    };
   }, []);
 
   return (
@@ -109,7 +88,9 @@ const Agency = () => {
       <div className="container">
         <div className="row gaper align-items-center">
           <div className="col-12 col-lg-6">
-            <div className="agency__thumb" ref={lottieContainer}></div>
+            <div className="agency__thumb">
+              {isClient && <Lottie animationData={Aboutus} loop={true} />}
+            </div>
           </div>
           <div className="col-12 col-lg-6">
             <div className="agency__content section__content">
