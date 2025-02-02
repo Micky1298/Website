@@ -3,14 +3,8 @@
 import type React from "react";
 import { useState } from "react";
 import emailjs from "@emailjs/browser";
-import Image from "next/image";
-import Link from "next/link";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import phone from "public/images/phone.png";
-import mail from "public/images/mail.png";
-import location from "public/images/location.png";
-import time from "public/images/time.png";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -187,7 +181,8 @@ const ContactForm = () => {
                           className="btn btn--primary"
                           disabled={status === "sending"}
                         >
-                          {status === "sending" ? "Sending..." : "Send Message"}
+                          {status === "sending" ? "Sending..." : "Send"}
+                          <i className="ml-2 fa-solid fa-arrow-up-right"></i>
                         </button>
                       </div>
                     </form>
@@ -323,6 +318,40 @@ const ContactForm = () => {
         .group-input textarea:focus,
         .subject-select:focus {
           border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Updated button styles */
+        .btn.btn--primary {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          padding: 12px 24px;;         
+          color: #fff;
+          border: none;
+          border-radius: 24px;
+          font-size: 16px;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          transition: all 0.3s ease;
+        }
+
+        
+
+        .btn.btn--primary:disabled {
+          background-color: #cccccc;
+          cursor: not-allowed;
+        }
+
+        .btn.btn--primary i {
+          margin-left: 10px;
+          font-size: 18px;
+          transition: transform 0.3s ease;
+        }
+
+        .btn.btn--primary:hover i {
+          transform: translateX(5px);
         }
       `}</style>
     </section>
