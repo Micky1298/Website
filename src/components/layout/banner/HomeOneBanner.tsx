@@ -3,9 +3,9 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import lottie from "lottie-web";
 
 import star from "public/images/star.png";
 import Hero1 from "../../../../public/Hero.json";
@@ -13,19 +13,11 @@ import letstalkfinal from "/public/images/letstalkfinal.svg";
 import YoutubeEmbed from "@/components/youtube/YoutubeEmbed";
 import styles from "@/HomeOneBanner.module.scss";
 
-const LottiePlayer = dynamic(() => import("react-lottie-player"), {
-  ssr: false,
-  loading: () => <div>Loading animation...</div>,
-});
-
 const HomeOneBanner = () => {
   const [videoActive, setVideoActive] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const lottieRef = useRef<any>(null);
+  const lottieContainer = useRef(null);
 
   useEffect(() => {
-    setIsMounted(true);
-
     if (typeof window !== "undefined" && typeof document !== "undefined") {
       gsap.registerPlugin(ScrollTrigger);
 
@@ -51,6 +43,17 @@ const HomeOneBanner = () => {
           yPercent: 100,
           zIndex: -1,
           duration: 2,
+        });
+      }
+
+      // Initialize Lottie animation
+      if (lottieContainer.current) {
+        lottie.loadAnimation({
+          container: lottieContainer.current,
+          renderer: "svg",
+          loop: true,
+          autoplay: true,
+          animationData: Hero1,
         });
       }
     }
@@ -113,17 +116,8 @@ const HomeOneBanner = () => {
             maxHeight: "80vh",
             overflow: "hidden",
           }}
-        >
-          {isMounted && (
-            <LottiePlayer
-              ref={lottieRef}
-              animationData={Hero1}
-              loop
-              play
-              style={{ width: "100%", height: "100%" }}
-            />
-          )}
-        </div>
+          ref={lottieContainer} 
+        ></div>
         <Image src={star || "/placeholder.svg"} alt="Image" className="star" />
         <div className="banner-left-text banner-social-text d-none d-md-flex">
           <Link href="mailto:info@reap.com">mail : info@reap.com</Link>

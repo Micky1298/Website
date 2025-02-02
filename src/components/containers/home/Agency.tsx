@@ -1,30 +1,22 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import dynamic from "next/dynamic";
+import lottie from "lottie-web";
 import star from "public/images/star.png";
 import dotlarge from "public/images/agency/dot-large.png";
-import Aboutus from "../../../../public/Aboutus.json"; // Replace with your Lottie animation file
-
-const LottiePlayer = dynamic(() => import("react-lottie-player"), {
-  ssr: false,
-  loading: () => <div>Loading animation...</div>,
-});
-
-gsap.registerPlugin(ScrollTrigger);
+import Aboutus from "../../../../public/Aboutus.json";
 
 const Agency = () => {
-  const [isMounted, setIsMounted] = useState(false);
-  const lottieRef = useRef<any>(null);
+  const lottieContainer = useRef(null);
 
   useEffect(() => {
-    setIsMounted(true);
-
     if (typeof window !== "undefined" && typeof document !== "undefined") {
+      gsap.registerPlugin(ScrollTrigger);
+
       const percentElements = document.querySelectorAll("[data-percent]");
 
       percentElements.forEach((el) => {
@@ -85,6 +77,17 @@ const Agency = () => {
           );
         }
       });
+
+      // Initialize Lottie animation
+      if (lottieContainer.current) {
+        lottie.loadAnimation({
+          container: lottieContainer.current,
+          renderer: "svg",
+          loop: true,
+          autoplay: true,
+          animationData: Aboutus,
+        });
+      }
     }
   }, []);
 
@@ -93,17 +96,7 @@ const Agency = () => {
       <div className="container">
         <div className="row gaper align-items-center">
           <div className="col-12 col-lg-6">
-            <div className="agency__thumb">
-              {isMounted && (
-                <LottiePlayer
-                  ref={lottieRef}
-                  animationData={Aboutus}
-                  loop={true}
-                  play={true}
-                  style={{ width: "100%", height: "100%" }}
-                />
-              )}
-            </div>
+            <div className="agency__thumb" ref={lottieContainer}></div>
           </div>
           <div className="col-12 col-lg-6">
             <div className="agency__content section__content">
