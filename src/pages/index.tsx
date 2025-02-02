@@ -6,7 +6,7 @@ import PortfolioText from "@/components/containers/home/PortfolioText";
 import HomeOffer from "@/components/containers/home/HomeOffer";
 import Preloader from "@/components/Preloader";
 import { usePreloader } from "@/hooks/usePreloader";
-import SimpleLottiePreview from "@/pages/lottie";
+
 
 import FaqMain from "@/components/containers/FaqMain";
 
