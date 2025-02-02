@@ -13,13 +13,10 @@ import letstalkfinal from "/public/images/letstalkfinal.svg";
 import YoutubeEmbed from "@/components/youtube/YoutubeEmbed";
 import styles from "@/HomeOneBanner.module.scss";
 
-const LottiePlayer = dynamic(
-  () => import("react-lottie-player").then((mod) => mod.default),
-  {
-    ssr: false,
-    loading: () => <div>Loading animation...</div>,
-  },
-);
+const LottiePlayer = dynamic(() => import("react-lottie-player"), {
+  ssr: false,
+  loading: () => <div>Loading animation...</div>,
+});
 
 const HomeOneBanner = () => {
   const [videoActive, setVideoActive] = useState(false);
