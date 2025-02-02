@@ -5,21 +5,17 @@ import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import Lottie from "lottie-react";
 
 import star from "public/images/star.png";
-import Hero1 from "../../../../public/Hero.json";
 import letstalkfinal from "/public/images/letstalkfinal.svg";
+import hero from "../../../../public/hero.gif"; // Make sure to add your GIF file
 import YoutubeEmbed from "@/components/youtube/YoutubeEmbed";
 import styles from "@/HomeOneBanner.module.scss";
 
 const HomeOneBanner = () => {
   const [videoActive, setVideoActive] = useState(false);
-  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
-
     if (typeof window !== "undefined") {
       gsap.registerPlugin(ScrollTrigger);
 
@@ -95,24 +91,26 @@ const HomeOneBanner = () => {
             </div>
           </div>
         </div>
-        {isClient && (
-          <div
-            className="banner-one-thumb d-none d-sm-block g-ban-one"
-            style={{
-              position: "absolute",
-              right: "0",
-              top: "65%",
-              transform: "translateY(-50%)",
-              width: "40%",
-              height: "auto",
-              maxHeight: "80vh",
-              overflow: "hidden",
-            }}
-          >
-            <Lottie animationData={Hero1} loop={true} />
-          </div>
-        )}
-        <Image src={star || "/placeholder.svg"} alt="Image" className="star" />
+        <div
+          className="banner-one-thumb d-none d-sm-block g-ban-one"
+          style={{
+            position: "absolute",
+            right: "0",
+            top: "65%",
+            transform: "translateY(-50%)",
+            width: "40%",
+            height: "auto",
+            maxHeight: "80vh",
+            overflow: "hidden",
+          }}
+        >
+          <Image
+            src={hero || "/placeholder.svg"}
+            alt="Hero Animation"
+            layout="responsive"
+          />
+        </div>
+        <Image src={star || "/placeholder.svg"} alt="Star" className="star" />
         <div className="banner-left-text banner-social-text d-none d-md-flex">
           <Link href="mailto:info@reap.com">mail : info@reap.com</Link>
           <Link href="tel:99-2158-003-6980">Call : +91 82973 13809</Link>
@@ -134,7 +132,7 @@ const HomeOneBanner = () => {
             <i className="icon-arrow-top-right"></i>
             <Image
               src={letstalkfinal || "/placeholder.svg"}
-              alt="Image"
+              alt="Let's Talk"
               priority
             />
           </button>
@@ -153,10 +151,7 @@ const HomeOneBanner = () => {
         onClick={() => setVideoActive(false)}
       >
         <div className="video-inner">
-          <div
-            className="video-container"
-            onClick={(e: any) => e.stopPropagation()}
-          >
+          <div className="video-container" onClick={(e) => e.stopPropagation()}>
             {videoActive && <YoutubeEmbed embedId="fSv6UgCkuTU" />}
             <button
               aria-label="close video popup"
