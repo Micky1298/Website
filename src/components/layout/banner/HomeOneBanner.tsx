@@ -13,8 +13,8 @@ import letstalkfinal from "/public/images/letstalkfinal.svg";
 import YoutubeEmbed from "@/components/youtube/YoutubeEmbed";
 import styles from "@/HomeOneBanner.module.scss";
 
-const Lottie = dynamic(
-  () => import("lottie-react").then((mod) => mod.default),
+const LottiePlayer = dynamic(
+  () => import("react-lottie-player").then((mod) => mod.default),
   {
     ssr: false,
     loading: () => <div>Loading animation...</div>,
@@ -118,11 +118,11 @@ const HomeOneBanner = () => {
           }}
         >
           {isMounted && (
-            <Lottie
-              lottieRef={lottieRef}
+            <LottiePlayer
+              ref={lottieRef}
               animationData={Hero1}
-              loop={true}
-              autoplay={true}
+              loop
+              play
               style={{ width: "100%", height: "100%" }}
             />
           )}
