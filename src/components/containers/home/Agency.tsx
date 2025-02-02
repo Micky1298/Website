@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import lottie from "lottie-web";
+import dynamic from "next/dynamic";
+import thumbone from "public/images/agency/thumb-one.png";
 import star from "public/images/star.png";
 import dotlarge from "public/images/agency/dot-large.png";
 import Aboutus from "../../../../public/Aboutus.json";
@@ -14,7 +15,22 @@ const Agency = () => {
   const lottieContainer = useRef(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && typeof document !== "undefined") {
+    let lottieAnimation: any;
+
+    const initializeLottie = async () => {
+      const lottie = (await import("lottie-web")).default;
+      if (lottieContainer.current) {
+        lottieAnimation = lottie.loadAnimation({
+          container: lottieContainer.current,
+          renderer: "svg",
+          loop: true,
+          autoplay: true,
+          animationData: Aboutus,
+        });
+      }
+    };
+
+    if (typeof window !== "undefined") {
       gsap.registerPlugin(ScrollTrigger);
 
       const percentElements = document.querySelectorAll("[data-percent]");
@@ -78,17 +94,14 @@ const Agency = () => {
         }
       });
 
-      // Initialize Lottie animation
-      if (lottieContainer.current) {
-        lottie.loadAnimation({
-          container: lottieContainer.current,
-          renderer: "svg",
-          loop: true,
-          autoplay: true,
-          animationData: Aboutus,
-        });
-      }
+      initializeLottie();
     }
+
+    return () => {
+      if (lottieAnimation) {
+        lottieAnimation.destroy();
+      }
+    };
   }, []);
 
   return (

@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import lottie from "lottie-web";
 
 import star from "public/images/star.png";
 import Hero1 from "../../../../public/Hero.json";
@@ -18,7 +17,22 @@ const HomeOneBanner = () => {
   const lottieContainer = useRef(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && typeof document !== "undefined") {
+    let lottieAnimation: any;
+
+    const initializeLottie = async () => {
+      const lottie = (await import("lottie-web")).default;
+      if (lottieContainer.current) {
+        lottieAnimation = lottie.loadAnimation({
+          container: lottieContainer.current,
+          renderer: "svg",
+          loop: true,
+          autoplay: true,
+          animationData: Hero1,
+        });
+      }
+    };
+
+    if (typeof window !== "undefined") {
       gsap.registerPlugin(ScrollTrigger);
 
       const device_width = window.innerWidth;
@@ -46,17 +60,14 @@ const HomeOneBanner = () => {
         });
       }
 
-      // Initialize Lottie animation
-      if (lottieContainer.current) {
-        lottie.loadAnimation({
-          container: lottieContainer.current,
-          renderer: "svg",
-          loop: true,
-          autoplay: true,
-          animationData: Hero1,
-        });
-      }
+      initializeLottie();
     }
+
+    return () => {
+      if (lottieAnimation) {
+        lottieAnimation.destroy();
+      }
+    };
   }, []);
 
   return (
@@ -116,7 +127,7 @@ const HomeOneBanner = () => {
             maxHeight: "80vh",
             overflow: "hidden",
           }}
-          ref={lottieContainer} 
+          ref={lottieContainer}
         ></div>
         <Image src={star || "/placeholder.svg"} alt="Image" className="star" />
         <div className="banner-left-text banner-social-text d-none d-md-flex">
