@@ -3,9 +3,9 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import dynamic from "next/dynamic";
 
 import star from "public/images/star.png";
 import Hero1 from "../../../../public/Hero.json";
@@ -13,9 +13,13 @@ import letstalkfinal from "/public/images/letstalkfinal.svg";
 import YoutubeEmbed from "@/components/youtube/YoutubeEmbed";
 import styles from "@/HomeOneBanner.module.scss";
 
-const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
-
-gsap.registerPlugin(ScrollTrigger);
+const Lottie = dynamic(
+  () => import("lottie-react").then((mod) => mod.default),
+  {
+    ssr: false,
+    loading: () => <div>Loading animation...</div>,
+  },
+);
 
 const HomeOneBanner = () => {
   const [videoActive, setVideoActive] = useState(false);
@@ -25,7 +29,9 @@ const HomeOneBanner = () => {
   useEffect(() => {
     setIsMounted(true);
 
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && typeof document !== "undefined") {
+      gsap.registerPlugin(ScrollTrigger);
+
       const device_width = window.innerWidth;
 
       if (
