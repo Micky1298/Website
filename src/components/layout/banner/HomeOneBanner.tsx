@@ -1,19 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import Lottie from "lottie-react";
 
 import star from "public/images/star.png";
+import Hero1 from "../../../../public/Hero.json";
 import letstalkfinal from "/public/images/letstalkfinal.svg";
-import hero from "../../../../public/hero.gif"; // Make sure to add your GIF file
 import YoutubeEmbed from "@/components/youtube/YoutubeEmbed";
 import styles from "@/HomeOneBanner.module.scss";
 
 const HomeOneBanner = () => {
   const [videoActive, setVideoActive] = useState(false);
+  const lottieRef = useRef<any>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -104,13 +106,15 @@ const HomeOneBanner = () => {
             overflow: "hidden",
           }}
         >
-          <Image
-            src={hero || "/placeholder.svg"}
-            alt="Hero Animation"
-            layout="responsive"
-          />
+          <Lottie animationData={Hero1} lottieRef={lottieRef} />
         </div>
-        <Image src={star || "/placeholder.svg"} alt="Star" className="star" />
+        <Image
+          src={star || "/placeholder.svg"}
+          alt="Star"
+          className="star"
+          width={50}
+          height={50}
+        />
         <div className="banner-left-text banner-social-text d-none d-md-flex">
           <Link href="mailto:info@reap.com">mail : info@reap.com</Link>
           <Link href="tel:99-2158-003-6980">Call : +91 82973 13809</Link>
@@ -133,7 +137,8 @@ const HomeOneBanner = () => {
             <Image
               src={letstalkfinal || "/placeholder.svg"}
               alt="Let's Talk"
-              priority
+              width={100}
+              height={100}
             />
           </button>
         </Link>

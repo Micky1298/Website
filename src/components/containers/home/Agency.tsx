@@ -1,16 +1,19 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import Lottie from "lottie-react";
 
 import star from "public/images/star.png";
 import dotlarge from "public/images/agency/dot-large.png";
-import aboutUsGif from "../../../../public/aboutus.gif"; // Make sure to add your GIF file
+import Aboutus from "../../../../public/Aboutus.json";
 
 const Agency = () => {
+  const lottieRef = useRef<any>(null);
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       gsap.registerPlugin(ScrollTrigger);
@@ -84,11 +87,7 @@ const Agency = () => {
         <div className="row gaper align-items-center">
           <div className="col-12 col-lg-6">
             <div className="agency__thumb">
-              <Image
-                src={aboutUsGif || "/placeholder.svg"}
-                alt="About Us Animation"
-                layout="responsive"
-              />
+              <Lottie animationData={Aboutus} lottieRef={lottieRef} />
             </div>
           </div>
           <div className="col-12 col-lg-6">
@@ -127,12 +126,16 @@ const Agency = () => {
         src={star || "/placeholder.svg"}
         alt="Star"
         className="star"
+        width={50}
+        height={50}
         priority
       />
       <Image
         src={dotlarge || "/placeholder.svg"}
         alt="Dot Large"
         className="dot-large"
+        width={100}
+        height={100}
         priority
       />
     </section>
