@@ -1,82 +1,91 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import Lottie from "lottie-react";
-import thumbone from "public/images/agency/thumb-one.png";
+import dynamic from "next/dynamic";
 import star from "public/images/star.png";
 import dotlarge from "public/images/agency/dot-large.png";
 import Aboutus from "../../../../public/Aboutus.json"; // Replace with your Lottie animation file
 
+const LottiePlayer = dynamic(() => import("react-lottie-player"), {
+  ssr: false,
+  loading: () => <div>Loading animation...</div>,
+});
+
 gsap.registerPlugin(ScrollTrigger);
 
 const Agency = () => {
+  const [isMounted, setIsMounted] = useState(false);
   const lottieRef = useRef<any>(null);
 
   useEffect(() => {
-    const percentElements = document.querySelectorAll("[data-percent]");
+    setIsMounted(true);
 
-    percentElements.forEach((el) => {
-      const skillBarPercent = el.querySelector(
-        ".skill-bar-percent",
-      ) as HTMLElement | null;
-      const percentValue = el.parentNode?.querySelector(
-        ".percent-value",
-      ) as HTMLElement | null;
+    if (typeof window !== "undefined" && typeof document !== "undefined") {
+      const percentElements = document.querySelectorAll("[data-percent]");
 
-      if (skillBarPercent && percentValue) {
-        const percent = el.getAttribute("data-percent") || "0%";
-        skillBarPercent.style.width = percent;
-        percentValue.textContent = percent;
-      }
-    });
+      percentElements.forEach((el) => {
+        const skillBarPercent = el.querySelector(
+          ".skill-bar-percent",
+        ) as HTMLElement | null;
+        const percentValue = el.parentNode?.querySelector(
+          ".percent-value",
+        ) as HTMLElement | null;
 
-    const axProgressBar = document.querySelectorAll(".skill-bar-single");
-    axProgressBar.forEach((element) => {
-      const skillBarPercent = element.querySelector(
-        ".skill-bar-percent",
-      ) as HTMLElement | null;
-      const percentValue = element.querySelector(
-        ".percent-value",
-      ) as HTMLElement | null;
+        if (skillBarPercent && percentValue) {
+          const percent = el.getAttribute("data-percent") || "0%";
+          skillBarPercent.style.width = percent;
+          percentValue.textContent = percent;
+        }
+      });
 
-      if (skillBarPercent && percentValue) {
-        const target = percentValue.textContent || "0%";
+      const axProgressBar = document.querySelectorAll(".skill-bar-single");
+      axProgressBar.forEach((element) => {
+        const skillBarPercent = element.querySelector(
+          ".skill-bar-percent",
+        ) as HTMLElement | null;
+        const percentValue = element.querySelector(
+          ".percent-value",
+        ) as HTMLElement | null;
 
-        const axBarTimeline = gsap.timeline({
-          defaults: {
-            duration: 2,
-          },
-          scrollTrigger: {
-            trigger: element,
-          },
-        });
+        if (skillBarPercent && percentValue) {
+          const target = percentValue.textContent || "0%";
 
-        axBarTimeline.fromTo(
-          skillBarPercent,
-          {
-            width: 0,
-          },
-          {
-            width: target,
-          },
-        );
-
-        axBarTimeline.from(
-          percentValue,
-          {
-            textContent: "0%",
-            snap: {
-              textContent: 5,
+          const axBarTimeline = gsap.timeline({
+            defaults: {
+              duration: 2,
             },
-          },
-          "<",
-        );
-      }
-    });
+            scrollTrigger: {
+              trigger: element,
+            },
+          });
+
+          axBarTimeline.fromTo(
+            skillBarPercent,
+            {
+              width: 0,
+            },
+            {
+              width: target,
+            },
+          );
+
+          axBarTimeline.from(
+            percentValue,
+            {
+              textContent: "0%",
+              snap: {
+                textContent: 5,
+              },
+            },
+            "<",
+          );
+        }
+      });
+    }
   }, []);
 
   return (
@@ -85,13 +94,15 @@ const Agency = () => {
         <div className="row gaper align-items-center">
           <div className="col-12 col-lg-6">
             <div className="agency__thumb">
-              <Lottie
-                lottieRef={lottieRef}
-                animationData={Aboutus}
-                loop={true}
-                autoplay={true}
-                style={{ width: "100%", height: "100%" }}
-              />
+              {isMounted && (
+                <LottiePlayer
+                  ref={lottieRef}
+                  animationData={Aboutus}
+                  loop={true}
+                  play={true}
+                  style={{ width: "100%", height: "100%" }}
+                />
+              )}
             </div>
           </div>
           <div className="col-12 col-lg-6">
