@@ -55,7 +55,7 @@ const ContactForm = () => {
           country_code: formData.countryCode,
           phone_number: formData.phoneNumber,
         },
-        process.env.NEXT_PUBLIC_REAP_EMAILJS_PUBLIC_KEY,
+        process.env.NEXT_PUBLIC_REAP_EMAILJS_PUBLIC,
       );
       setStatus("success");
       setFormData({
